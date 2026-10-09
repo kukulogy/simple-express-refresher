@@ -16,7 +16,7 @@ export class OrderController {
 
         try {
             const data = orderService.createOrder(result.data);
-            res.send(data);
+            res.status(201).send({ data: { ...data }});
         } catch (error: unknown) {
             if (error instanceof Error) {
                 res.status(409).json({
@@ -85,7 +85,7 @@ export class OrderController {
         }
 
         try{ 
-            const order = orderService.updateOrderStatus(orderId, req.body);
+            const order = orderService.updateOrderStatus(orderId, result.data);
             res.send({ data: order });
         } catch(error: unknown) {
             if (error instanceof Error) {

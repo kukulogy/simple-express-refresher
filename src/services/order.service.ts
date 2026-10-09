@@ -37,7 +37,7 @@ export class OrderService {
         return order;
     }
 
-    updateOrderStatus(orderId: string, order: Order): StoredOrder {
+    updateOrderStatus(orderId: string, order: OrderPatch): StoredOrder {
         const index = orders.findIndex((x) => x.id === orderId);
 
         if (index === -1) {
@@ -48,7 +48,7 @@ export class OrderService {
         return orders[index];
     }
 
-    deleteOrderById(id: string): StoredOrder[] { 
+    deleteOrderById(id: string): void { 
         const index = orders.findIndex((x) => x.id === id);
 
         if (index === -1) {
@@ -56,8 +56,6 @@ export class OrderService {
         }
     
         orders.splice(index, 1);
-        
-        return orders;
     }
 
 }
