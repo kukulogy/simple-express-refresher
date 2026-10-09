@@ -10,7 +10,7 @@ import * as z from 'zod';
 
 const router = express.Router();
 
-let orders: Array<StoredOrder> = [];
+const orders: Array<StoredOrder> = [];
 const calculateTotal = (order: Order): number => {
   if (!order.quantity || !order.price) return 0;
   return order.price * order.quantity;
@@ -48,13 +48,9 @@ router.delete('/:order_id', (req: Request, res: Response) => {
         return res.status(404).send();
     }
 
-    orders = orders.reduce((accumulator, value: StoredOrder, i) => {
-        if (i === index) return accumulator;
-        accumulator.push(value)
-        return accumulator;
-    }, [] as StoredOrder[]);
+    orders.splice(index, 1);
 
-    res.status(204).send({ data: orders });
+    res.status(204).send();
 })
 
 router.post('/', (req: Request, res: Response) => {
