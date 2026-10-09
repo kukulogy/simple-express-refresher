@@ -22,22 +22,28 @@ const calculateTotal = (order: Order): number => {
 app.get('/', (req: Request, res: Response) => res.send('Hello World'));
 app.get('/orders', (req: Request, res: Response) => res.send({ data: orders }));
 app.get('/orders/:order_id', (req: Request, res: Response) => {
-  let order = orders.find((x) => x.id == req.params.order_id);
-  console.log(order);
-  if(order == undefined) res.status(404).send();
-  res.send(order);
+  const order = orders.find((x) => x.id === req.params.order_id);
+  if(order === undefined) return res.status(404).send();
+    res.send(order);
 });
 app.post('/orders', (req: Request, res: Response) => {
   const result = orderSchema.safeParse(req.body);
+
   if (!result.success) {
-    res.status(400).send({ data: { error: z.treeifyError(result.error) } });
-  } else {
-    const order = result.data;
-    const total = calculateTotal(order);
-    const item: StoredOrder = { ...order, total };
-    orders.push(item);
-    res.status(201).send({ data: { orders } });
+    return res.status(400).send({ data: { error: z.treeifyError(result.error) } });
   }
+
+  const exists = orders.find((x) => x.id === result.data.id);
+
+  if(exists) {
+    return res.status(409).send();
+  }
+
+  const order = result.data;
+  const total = calculateTotal(order);
+  const item: StoredOrder = { ...order, total };
+  orders.push(item);
+  res.status(201).send({ data: { orders } });
 });
 
 app.listen(PORT, () => {
