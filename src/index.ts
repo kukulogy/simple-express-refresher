@@ -1,5 +1,5 @@
 import express, { Request, Response, Application } from 'express';
-import orderRoutes from "./routes/OrderRoutes";
+import orderRoutes from "./routes/order.routes";
 const app = express();
 
 app.use(express.json());
