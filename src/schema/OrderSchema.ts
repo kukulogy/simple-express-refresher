@@ -18,7 +18,9 @@ export const storedOrderSchema = orderSchema.extend({
   total: z.number(),
 });
 
-export const orderPatchSchema = orderSchema.shape.status;
+export const orderPatchSchema = z.object({
+  status: z.enum(Status)
+})
 
 export type StoredOrder = z.infer<typeof storedOrderSchema>;
 export type Order = z.infer<typeof orderSchema>;

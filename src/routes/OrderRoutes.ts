@@ -24,7 +24,7 @@ router.get('/:order_id', (req: Request, res: Response) => {
 });
 
 router.patch('/:order_id', (req: Request, res: Response) => { 
-    const index = orders.findIndex((x) => x.id === req.params.id);
+    const index = orders.findIndex((x) => x.id === req.params.order_id);
     const result = orderPatchSchema.safeParse(req.body);
     console.log(JSON.stringify(result), req.body);
     if (!result.success) {
@@ -35,7 +35,7 @@ router.patch('/:order_id', (req: Request, res: Response) => {
         return res.status(404).send();
     }
 
-    orders[index]['status'] = result.data;
+    orders[index].status = result.data.status;
     
     res.send({ data : orders[index]});
 });
