@@ -40,6 +40,23 @@ router.patch('/:order_id', (req: Request, res: Response) => {
     
     res.send({ data : orders[index]});
 });
+
+router.delete('/:order_id', (req: Request, res: Response) => {
+    const index = orders.findIndex((x) => x.id === req.params.order_id);
+
+    if (index === -1) {
+        return res.status(404).send();
+    }
+
+    orders = orders.reduce((accumulator, value: StoredOrder, i) => {
+        if (i === index) return accumulator;
+        accumulator.push(value)
+        return accumulator;
+    }, [] as StoredOrder[]);
+
+    res.status(204).send({ data: orders });
+})
+
 router.post('/', (req: Request, res: Response) => {
   const result = orderSchema.safeParse(req.body);
 
