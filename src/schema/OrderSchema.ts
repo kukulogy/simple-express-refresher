@@ -17,3 +17,9 @@ export const orderSchema = z.object({
 export const storedOrderSchema = orderSchema.extend({
   total: z.number(),
 });
+
+export const orderPatchSchema = orderSchema.shape.status;
+
+export type StoredOrder = z.infer<typeof storedOrderSchema>;
+export type Order = z.infer<typeof orderSchema>;
+export type OrderPatch = z.infer<typeof orderPatchSchema>;
