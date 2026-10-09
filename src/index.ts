@@ -23,6 +23,8 @@ app.get('/', (req: Request, res: Response) => res.send('Hello World'));
 app.get('/orders', (req: Request, res: Response) => res.send({ data: orders }));
 app.get('/orders/:order_id', (req: Request, res: Response) => {
   let order = orders.find((x) => x.id == req.params.order_id);
+  console.log(order);
+  if(order == undefined) res.status(404).send();
   res.send(order);
 });
 app.post('/orders', (req: Request, res: Response) => {
