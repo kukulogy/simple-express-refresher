@@ -15,7 +15,7 @@ export class OrderController {
         }
 
         try {
-            const data = orderService.createOrder(req.body);
+            const data = orderService.createOrder(result.data);
             res.send(data);
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -111,8 +111,8 @@ export class OrderController {
                 });
                 return;
             }
-            const order = orderService.deleteOrderById(orderId);
-            res.send({ data: order });
+            orderService.deleteOrderById(orderId);
+            res.status(204).send();
         } catch(error: unknown) {
             if (error instanceof Error) {
                 return res.status(404).json({

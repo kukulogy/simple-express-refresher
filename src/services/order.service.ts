@@ -2,10 +2,7 @@ import {
     StoredOrder,
     Order, 
     OrderPatch,
-    orderSchema,
-    orderPatchSchema
 } from '../schemas/order.schemas';
-import * as z from 'zod';
 
 const orders: Array<StoredOrder> = [];
 
@@ -16,7 +13,7 @@ const calculateTotal = (order: Order): number => {
 
 export class OrderService {
 
-    createOrder(order: Order): Array<StoredOrder>  {
+    createOrder(order: Order): StoredOrder[]  {
         const exists = orders.find((x) => x.id === order.id);
       
         if(exists) {
@@ -29,18 +26,18 @@ export class OrderService {
         return orders;
     }
 
-    getOrders(): Order[] {
+    getOrders(): StoredOrder[] {
         return orders;
     }
 
-    getOrderById(id: string): Order | undefined {
+    getOrderById(id: string): StoredOrder {
         const order = orders.find((x) => x.id === id);
         console.log("test", order);
         if(order === undefined) throw new Error("Order not found");
         return order;
     }
 
-    updateOrderStatus(orderId: string, order: Order): Order | undefined {
+    updateOrderStatus(orderId: string, order: Order): StoredOrder {
         const index = orders.findIndex((x) => x.id === orderId);
 
         if (index === -1) {
@@ -51,7 +48,7 @@ export class OrderService {
         return orders[index];
     }
 
-    deleteOrderById(id: string): Array<StoredOrder> { 
+    deleteOrderById(id: string): StoredOrder[] { 
         const index = orders.findIndex((x) => x.id === id);
 
         if (index === -1) {
