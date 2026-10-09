@@ -25,14 +25,15 @@ router.get('/:order_id', (req: Request, res: Response) => {
 
 router.patch('/:order_id', (req: Request, res: Response) => { 
     const index = orders.findIndex((x) => x.id === req.params.order_id);
-    const result = orderPatchSchema.safeParse(req.body);
-    console.log(JSON.stringify(result), req.body);
-    if (!result.success) {
-        return res.status(400).send({ data: { error: z.treeifyError(result.error) } });
-    }
 
     if (index === -1) {
-        return res.status(404).send();
+      return res.status(404).send();
+    }
+
+    const result = orderPatchSchema.safeParse(req.body);
+
+    if (!result.success) {
+        return res.status(400).send({ data: { error: z.treeifyError(result.error) } });
     }
 
     orders[index].status = result.data.status;
